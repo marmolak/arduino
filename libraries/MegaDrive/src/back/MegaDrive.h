@@ -45,6 +45,7 @@ struct mg_six_button_state {
 };
 
 struct mg_three_callbacks {
+	struct mg_three_button_state state;
 	void (*up_fnc)();
 	void (*down_fnc)();
 	void (*left_fnc)();
@@ -56,6 +57,7 @@ struct mg_three_callbacks {
 };
 
 struct mg_six_callbacks {
+	struct mg_six_button_state state;
 	void (*up_fnc)();
 	void (*down_fnc)();
 	void (*left_fnc)();
@@ -69,99 +71,36 @@ struct mg_six_callbacks {
 	void (*z_fnc)();
 };
 
-inline void pin_setup(const struct mg_pin_setup &ps)
-{
-	pinMode(ps.D0, INPUT);
-	pinMode(ps.D1, INPUT);
-	pinMode(ps.D2, INPUT);
-	pinMode(ps.D3, INPUT);
-	pinMode(ps.D4, INPUT);
-	pinMode(ps.D5, INPUT);
-	pinMode(ps.SELECT, OUTPUT);
-}
 
-template<class T> class MegaDrive {
-};
-
-template<>
-class MegaDrive <struct mg_three_button_state>
+class MegaDrive
 {
 	public:
+		void pin_setup(const struct mg_pin_setup &ps);
 		MegaDrive(const struct mg_pin_setup &ps_p)
-		: state(), ps(ps_p)
+		: call_backs(), call_backs_six(), ps(ps_p)
+		{
+			pin_setup(ps_p);
+		}
+
+		MegaDrive(const struct mg_pin_setup &ps_p, struct mg_three_callbacks &call_backs_p) 
+		: call_backs(call_backs_p), call_backs_six(), ps(ps_p)
+		{
+			pin_setup(ps_p);
+		}
+
+		MegaDrive(const struct mg_pin_setup &ps_p, struct mg_six_callbacks &call_backs_p)
+		: call_backs(), call_backs_six(call_backs_p), ps(ps_p)
 		{
 			pin_setup(ps_p);
 		}
 
 		void update_states(void);
+		void update_states_six_call(void);
 
 	private:
-		struct mg_three_button_state state;
-		const struct mg_pin_setup &ps;
-};
-
-template<>
-class MegaDrive <struct mg_six_button_state>
-{
-	public:
-		MegaDrive(const struct mg_pin_setup &ps_p)
-		: state(), ps(ps_p)
-		{
-			pin_setup(ps_p);
-		}
-
-		void update_states(void);
-
-	private:
-		struct mg_six_button_state state;
-		const struct mg_pin_setup &ps;
-};
-
-template<>
-class MegaDrive <struct mg_three_callbacks>
-{
-	public:
-		MegaDrive(const struct mg_pin_setup &ps_p,
-				struct mg_three_callbacks &call_backs_up_p,
-				struct mg_three_callbacks &call_backs_down_p) 
-		: call_backs_up(call_backs_up_p), call_backs_down(call_backs_down_p), ps(ps_p), state(),
-		  prev_state()
-		{
-			pin_setup(ps_p);
-		}
-
-		void update_states(void);
-
-	private:
-		struct mg_three_callbacks &call_backs_up;
-		struct mg_three_callbacks &call_backs_down;
-		const struct mg_pin_setup &ps;
-		struct mg_three_button_state state;
-		struct mg_three_button_state prev_state;
-};
-
-template<>
-class MegaDrive <struct mg_six_callbacks>
-{
-	public:
-		MegaDrive(const struct mg_pin_setup &ps_p,
-				struct mg_six_callbacks &call_backs_up_p,
-				struct mg_six_callbacks &call_backs_down_p
-				)
-		: call_backs_up(call_backs_up_p), call_backs_down(call_backs_down_p), ps(ps_p), state(),
-		  prev_state()
-		{
-			pin_setup(ps_p);
-		}
-
-		void update_states(void);
-
-	private:
-		struct mg_six_callbacks &call_backs_up;
-		struct mg_six_callbacks &call_backs_down;
-		const struct mg_pin_setup &ps;
-		struct mg_six_button_state state;
-		struct mg_six_button_state prev_state;
+		struct mg_three_callbacks call_backs;
+		struct mg_six_callbacks call_backs_six;
+		const struct mg_pin_setup ps;
 };
 
 #endif /* __MEGADRIVE_H */

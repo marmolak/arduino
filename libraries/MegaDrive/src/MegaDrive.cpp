@@ -17,7 +17,6 @@ void MegaDrive<mg_three_button_state>::update_states(void)
 	state.down 	= !digitalRead(ps.D1);
 	state.b 	= !digitalRead(ps.D4);
 	state.c 	= !digitalRead(ps.D5);
-
 }
 
 void MegaDrive<mg_six_button_state>::update_states(void)
@@ -25,25 +24,35 @@ void MegaDrive<mg_six_button_state>::update_states(void)
 }
 
 # define CALL_FNC(btn) \
-	if (call_backs.state.btn && call_backs.btn##_fnc != (void *)0) { \
-		call_backs.btn##_fnc(); \
+	if (state.btn) { \
+		if (call_backs_down.btn##_fnc != (void *)0) { \
+			call_backs_down.btn##_fnc(); \
+		} \
+	} else { \
+		if (prev_state.btn) { \
+			if (call_backs_up.btn##_fnc != (void *)0) { \
+				call_backs_up.btn##_fnc(); \
+			} \
+			prev_state.btn = state.btn; \
+		} \
 	}
+// end of CALL_FNC
 
 void MegaDrive<mg_three_callbacks>::update_states(void)
 {
 	digitalWrite(ps.SELECT, LOW);
 
-	call_backs.state.left 	= !digitalRead(ps.D2);
-	call_backs.state.right 	= !digitalRead(ps.D3);
-	call_backs.state.a 	= !digitalRead(ps.D4);
-	call_backs.state.start 	= !digitalRead(ps.D5);
+	state.left 	= !digitalRead(ps.D2);
+	state.right 	= !digitalRead(ps.D3);
+	state.a 	= !digitalRead(ps.D4);
+	state.start 	= !digitalRead(ps.D5);
 
 	digitalWrite(ps.SELECT, HIGH);
 
-	call_backs.state.up 	= !digitalRead(ps.D0);
-	call_backs.state.down 	= !digitalRead(ps.D1);
-	call_backs.state.b 	= !digitalRead(ps.D4);
-	call_backs.state.c 	= !digitalRead(ps.D5);
+	state.up 	= !digitalRead(ps.D0);
+	state.down 	= !digitalRead(ps.D1);
+	state.b 	= !digitalRead(ps.D4);
+	state.c 	= !digitalRead(ps.D5);
 
 	CALL_FNC(left);
 	CALL_FNC(right);
