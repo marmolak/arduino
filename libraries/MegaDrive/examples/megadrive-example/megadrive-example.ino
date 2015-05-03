@@ -6,7 +6,7 @@ static struct mg_pin_setup ps = {
   .D0 = 4, // Use pin 4 of Arduino uno as input (UP key)
 };
 
-static struct mg_three_callbacks clbs = {
+static struct mg_three_callbacks clbs_up = {
   .up_fnc = &up_keyup,
 };
 
@@ -14,7 +14,7 @@ static struct mg_three_callbacks clbs_down = {
   .up_fnc = &up_keydown,
 };
 
-MegaDrive<mg_three_callbacks> *X = new MegaDrive<mg_three_callbacks>(ps, clbs, clbs_down);;
+MegaDrive<mg_three_callbacks> *X = new MegaDrive<mg_three_callbacks>(ps, clbs_up, clbs_down);
 
 void up_keyup(void)
 {
