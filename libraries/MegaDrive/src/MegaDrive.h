@@ -20,28 +20,28 @@ struct mg_pin_setup {
 };
 
 struct mg_three_button_state {
-	bool up 	: 1;
-	bool down 	: 1;
-	bool left	: 1;
-	bool right	: 1;
-	bool a		: 1;
-	bool b		: 1;
-	bool c		: 1;
-	bool start	: 1;
+	bool up;
+	bool down;
+	bool left;
+	bool right;
+	bool a;
+	bool b;
+	bool c;
+	bool start;
 };
 
 struct mg_six_button_state {
-	bool up 	: 1;
-	bool down 	: 1;
-	bool left 	: 1;
-	bool right 	: 1;
-	bool a 		: 1;
-	bool b 		: 1;
-	bool c 		: 1;
-	bool start 	: 1;
-	bool x 		: 1;
-	bool y 		: 1;
-	bool z 		: 1;
+	bool up;
+	bool down;
+	bool left;
+	bool right;
+	bool a;
+	bool b;
+	bool c;
+	bool start;
+	bool x;
+	bool y;
+	bool z;
 };
 
 struct mg_three_callbacks {
@@ -69,7 +69,7 @@ struct mg_six_callbacks {
 	void (*z_fnc)();
 };
 
-inline void pin_setup(const struct mg_pin_setup &ps)
+static void pin_setup(const struct mg_pin_setup &ps)
 {
 	pinMode(ps.D0, INPUT);
 	pinMode(ps.D1, INPUT);
