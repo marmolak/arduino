@@ -14,7 +14,7 @@ static struct mg_three_callbacks clbs_down = {
   .up_fnc = &up_keydown,
 };
 
-MegaDrive<mg_three_callbacks> *X = new MegaDrive<mg_three_callbacks>(ps, clbs_up, clbs_down);
+ MDThreeBtnsCallbacks *X = new  MDThreeBtnsCallbacks(ps, clbs_up, clbs_down);
 
 void up_keyup(void)
 {

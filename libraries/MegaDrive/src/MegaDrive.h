@@ -83,6 +83,7 @@ static void pin_setup(const struct mg_pin_setup &ps)
 template<class T> class MegaDrive {
 };
 
+typedef MegaDrive<struct mg_three_button_state> MDThreeBtnsState;
 template<>
 class MegaDrive <struct mg_three_button_state>
 {
@@ -100,6 +101,7 @@ class MegaDrive <struct mg_three_button_state>
 		const struct mg_pin_setup &ps;
 };
 
+typedef MegaDrive<struct mg_six_button_state> MDSixBtnsState;
 template<>
 class MegaDrive <struct mg_six_button_state>
 {
@@ -117,6 +119,7 @@ class MegaDrive <struct mg_six_button_state>
 		const struct mg_pin_setup &ps;
 };
 
+typedef MegaDrive<struct mg_three_callbacks> MDThreeBtnsCallbacks;
 template<>
 class MegaDrive <struct mg_three_callbacks>
 {
@@ -140,6 +143,7 @@ class MegaDrive <struct mg_three_callbacks>
 		struct mg_three_button_state prev_state;
 };
 
+typedef MegaDrive<struct mg_six_callbacks> MDSixBtnsCallbacks;
 template<>
 class MegaDrive <struct mg_six_callbacks>
 {
