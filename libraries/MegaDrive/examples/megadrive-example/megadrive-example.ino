@@ -1,16 +1,16 @@
 #include <MegaDrive.h>
 
-int led = 13;
+const int led = 13;
 
-static struct mg_pin_setup ps = {
+static const struct mg_pin_setup ps = {
   .D0 = 4, // Use pin 4 of Arduino uno as input (UP key)
 };
 
-static struct mg_three_callbacks clbs_up = {
+static const struct mg_three_callbacks clbs_up = {
   .up_fnc = &up_keyup,
 };
 
-static struct mg_three_callbacks clbs_down = {
+static const struct mg_three_callbacks clbs_down = {
   .up_fnc = &up_keydown,
 };
 
