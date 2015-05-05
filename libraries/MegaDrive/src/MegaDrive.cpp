@@ -42,13 +42,13 @@ void MegaDrive<mg_three_callbacks>::update_states(void)
 {
 	digitalWrite(ps.SELECT, LOW);
 
-	state.left 	= !digitalRead(ps.D2);
-	state.right 	= !digitalRead(ps.D3);
 	state.a 	= !digitalRead(ps.D4);
 	state.start 	= !digitalRead(ps.D5);
 
 	digitalWrite(ps.SELECT, HIGH);
 
+	state.left 	= !digitalRead(ps.D2);
+	state.right 	= !digitalRead(ps.D3);
 	state.up 	= !digitalRead(ps.D0);
 	state.down 	= !digitalRead(ps.D1);
 	state.b 	= !digitalRead(ps.D4);
