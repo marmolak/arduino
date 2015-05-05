@@ -33,9 +33,9 @@ void MegaDrive<mg_six_button_state>::update_states(void)
 			if (call_backs_up.btn##_fnc != (void *)0) { \
 				call_backs_up.btn##_fnc(); \
 			} \
-			prev_state.btn = state.btn; \
 		} \
-	}
+	} \
+	prev_state.btn = state.btn;
 // end of CALL_FNC
 
 void MegaDrive<mg_three_callbacks>::update_states(void)
