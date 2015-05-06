@@ -44,17 +44,6 @@ struct mg_six_button_state {
 	bool z;
 };
 
-struct mg_three_callbacks {
-	void (*up_fnc)();
-	void (*down_fnc)();
-	void (*left_fnc)();
-	void (*right_fnc)();
-	void (*a_fnc)();
-	void (*b_fnc)();
-	void (*c_fnc)();
-	void (*start_fnc)();
-};
-
 struct mg_six_callbacks {
 	void (*up_fnc)();
 	void (*down_fnc)();
@@ -80,25 +69,28 @@ static void pin_setup(const struct mg_pin_setup &ps)
 	pinMode(ps.SELECT, OUTPUT);
 }
 
-template<class T> class MegaDrive {
+// Abstract prototype
+class MegaDrive_JoypadActions {
+	public:
+		virtual void up_key_down() = 0;
+		virtual void up_key_up();
+		virtual void down_key_down();
+		virtual	void down_key_up();
+		virtual	void left_key_down();
+		virtual	void left_key_up();
+		virtual	void right_key_down();
+		virtual	void right_key_up();
+		virtual	void a_key_down();
+		virtual	void a_key_up();
+		virtual	void b_key_down();
+		virtual	void b_key_up();
+		virtual	void c_key_down();
+		virtual	void c_key_up();
+		virtual	void start_key_down();
+		virtual	void start_key_up();
 };
 
-typedef MegaDrive<struct mg_three_button_state> MDThreeBtnsState;
-template<>
-class MegaDrive <struct mg_three_button_state>
-{
-	public:
-		MegaDrive(const struct mg_pin_setup &ps_p)
-		: state(), ps(ps_p)
-		{
-			pin_setup(ps_p);
-		}
-
-		void update_states(void);
-
-	private:
-		struct mg_three_button_state state;
-		const struct mg_pin_setup &ps;
+template<class T> class MegaDrive {
 };
 
 typedef MegaDrive<struct mg_six_button_state> MDSixBtnsState;
@@ -124,11 +116,9 @@ template<>
 class MegaDrive <struct mg_three_callbacks>
 {
 	public:
-		MegaDrive(const struct mg_pin_setup &ps_p,
-			  const struct mg_three_callbacks &call_backs_up_p,
-			  const struct mg_three_callbacks &call_backs_down_p) 
-		: call_backs_up(call_backs_up_p), call_backs_down(call_backs_down_p), ps(ps_p), state(),
-		  prev_state()
+		MegaDrive(const struct mg_pin_setup &ps_p, MegaDrive_JoypadActions &joypad_actions_p)
+		: ps(ps_p), state(),
+		  prev_state(), joypad_actions(joypad_actions_p)
 		{
 			pin_setup(ps_p);
 		}
@@ -136,11 +126,10 @@ class MegaDrive <struct mg_three_callbacks>
 		void update_states(void);
 
 	private:
-		const struct mg_three_callbacks &call_backs_up;
-		const struct mg_three_callbacks &call_backs_down;
 		const struct mg_pin_setup &ps;
 		struct mg_three_button_state state;
 		struct mg_three_button_state prev_state;
+		MegaDrive_JoypadActions &joypad_actions;
 };
 
 typedef MegaDrive<struct mg_six_callbacks> MDSixBtnsCallbacks;

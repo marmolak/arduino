@@ -5,6 +5,49 @@ const int left_led = 12;
 const int down_led = 11;
 const int right_led = 10;
 
+class JoypadActions : public MegaDrive_JoypadActions {
+    void up_key_down() {
+      led_high(up_led);
+    };
+    void up_key_up() {
+      led_low(up_led);
+    };
+    void down_key_down() {
+      led_high(down_led);
+    };
+    void down_key_up() {
+      led_low(down_led);
+    };
+    void left_key_down() {
+      led_high(left_led);
+    };
+    void left_key_up() {
+      led_low(left_led);
+    };
+    void right_key_down() {
+      led_high(right_led);
+    };
+    void right_key_up() {
+      led_low(right_led);
+    };
+    void a_key_down() {};
+    void a_key_up() {};
+    void b_key_down() {};
+    void b_key_up() {};
+    void c_key_down() {};
+    void c_key_up() {};
+    void start_key_down() {};
+    void start_key_up() {};
+  private:
+    void led_high(const int led) {
+      digitalWrite(led, HIGH);
+    };
+    void led_low(const int led) {
+      digitalWrite(led, LOW);
+    };
+};
+JoypadActions ja = JoypadActions();
+
 static const struct mg_pin_setup ps = {
   .D0 = 1,     // (UP key)
   .D1 = 2,     // (DOWN key)
@@ -15,71 +58,7 @@ static const struct mg_pin_setup ps = {
   .D5 = 7,     // (C or START key)
 };
 
-static const struct mg_three_callbacks clbs_up = {
-  .up_fnc = &up_keyup,
-  .down_fnc = &down_keyup,
-  .left_fnc = &left_keyup,
-  .right_fnc = &right_keyup,
-  .a_fnc = NULL,
-  .b_fnc = NULL,
-  .c_fnc = NULL,
-  .start_fnc = NULL
-};
-
-static const struct mg_three_callbacks clbs_down = {
-  .up_fnc = &up_keydown,
-  .down_fnc = &down_keydown,
-  .left_fnc = &left_keydown,
-  .right_fnc = &right_keydown,
-  .a_fnc = NULL,
-  .b_fnc = NULL,
-  .c_fnc = NULL,
-  .start_fnc = NULL
-};
-
-MDThreeBtnsCallbacks X = MDThreeBtnsCallbacks(ps, clbs_up, clbs_down);
-
-void left_keyup(void)
-{
-  digitalWrite(left_led, LOW);
-}
-
-void left_keydown(void)
-{
-  digitalWrite(left_led, HIGH);
-}
-
-void down_keyup(void)
-{
-  digitalWrite(down_led, LOW);
-}
-
-void right_keydown(void)
-{
-  digitalWrite(right_led, HIGH);
-}
-
-void right_keyup(void)
-{
-  digitalWrite(right_led, LOW);
-}
-
-
-void down_keydown(void)
-{
-  digitalWrite(down_led, HIGH);
-}
-
-void up_keyup(void)
-{
-  digitalWrite(up_led, LOW);
-}
-
-void up_keydown(void)
-{
-  digitalWrite(up_led, HIGH);
-}
-
+MDThreeBtnsCallbacks MegaDriveEngine = MDThreeBtnsCallbacks(ps, ja);
 
 void setup() {
   pinMode(up_led, OUTPUT);
@@ -89,7 +68,7 @@ void setup() {
 }
 
 void loop() {
-  X.update_states();
+  MegaDriveEngine.update_states();
   delay(20);
 }
 
