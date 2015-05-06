@@ -37,7 +37,7 @@ static const struct mg_three_callbacks clbs_down = {
   .start_fnc = NULL
 };
 
-MDThreeBtnsCallbacks *const X = new  MDThreeBtnsCallbacks(ps, clbs_up, clbs_down);
+MDThreeBtnsCallbacks X = MDThreeBtnsCallbacks(ps, clbs_up, clbs_down);
 
 void left_keyup(void)
 {
@@ -89,7 +89,7 @@ void setup() {
 }
 
 void loop() {
-  X->update_states();
+  X.update_states();
   delay(20);
 }
 
