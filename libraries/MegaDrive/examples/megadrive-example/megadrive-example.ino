@@ -5,7 +5,7 @@ const int left_led = 12;
 const int down_led = 11;
 const int right_led = 10;
 
-class JoypadActions : public MegaDrive_JoypadActions {
+class JoypadActions : public MD_JoypadActionsThree {
     void up_key_down() {
       led_high(up_led);
     };
@@ -30,6 +30,7 @@ class JoypadActions : public MegaDrive_JoypadActions {
     void right_key_up() {
       led_low(right_led);
     };
+    /* Compiler will optimise these out */
     void a_key_down() {};
     void a_key_up() {};
     void b_key_down() {};
@@ -48,7 +49,7 @@ class JoypadActions : public MegaDrive_JoypadActions {
 };
 JoypadActions ja = JoypadActions();
 
-static const struct mg_pin_setup ps = {
+static const struct md_pin_setup ps = {
   .D0 = 1,     // (UP key)
   .D1 = 2,     // (DOWN key)
   .D2 = 3,     // (LEFT key)
@@ -58,7 +59,7 @@ static const struct mg_pin_setup ps = {
   .D5 = 7,     // (C or START key)
 };
 
-MDThreeBtnsCallbacks MegaDriveEngine = MDThreeBtnsCallbacks(ps, ja);
+MD_JoypadThree Joypad = MD_JoypadThree(ps, ja);
 
 void setup() {
   pinMode(up_led, OUTPUT);
@@ -68,7 +69,7 @@ void setup() {
 }
 
 void loop() {
-  MegaDriveEngine.update_states();
+  Joypad.update_states();
   delay(20);
 }
 
