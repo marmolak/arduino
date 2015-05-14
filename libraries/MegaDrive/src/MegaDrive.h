@@ -42,6 +42,7 @@ struct md_six_button_state {
 	bool x;
 	bool y;
 	bool z;
+	bool mode;
 };
 
 static void pin_setup_impl(const struct md_pin_setup &pin_setup)
@@ -53,6 +54,7 @@ static void pin_setup_impl(const struct md_pin_setup &pin_setup)
 	pinMode(pin_setup.D4, INPUT);
 	pinMode(pin_setup.D5, INPUT);
 	pinMode(pin_setup.SELECT, OUTPUT);
+	digitalWrite(pin_setup.SELECT, HIGH);
 }
 
 // Abstract prototype
@@ -100,6 +102,8 @@ class MD_JoypadActionsSix {
 		virtual	void y_key_up();
 		virtual	void z_key_down();
 		virtual	void z_key_up();
+		virtual	void mode_key_down();
+		virtual	void mode_key_up();
 };
 
 template<class T> class MegaDriveJoypad {
